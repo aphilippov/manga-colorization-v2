@@ -26,6 +26,10 @@ class MangaColorizator:
         
         if apply_denoise:
             image = self.denoiser.get_denoised_image(image, sigma = denoise_sigma)
+
+        # Apply bicubic resize
+        resize = transforms.Resize(size, interpolation=transforms.InterpolationMode.BICUBIC)
+        image = resize(image)
         
         image, self.current_pad = resize_pad(image, size)
         self.current_image = transform(image).unsqueeze(0).to(self.device)
